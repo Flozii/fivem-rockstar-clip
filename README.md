@@ -1,4 +1,4 @@
-# fivem-rockstar-clip
+# Rockstar Clip Saver for FiveM
 Save your clips with rockstar editor in FiveM
 
 ## How does it works ?

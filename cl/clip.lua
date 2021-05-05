@@ -1,6 +1,6 @@
 local menuopen = false
 local mainm = RageUI.CreateMenu("Rockstar Editor", "Save clip with this menu")
-local mainm2 = RageUI.CreateSubMenu("Rockstar Editor", "Are you sure ?")
+local mainm2 = RageUI.CreateSubMenu(mainm, "Rockstar Editor", "Are you sure ?")
 local closemenu = "NO"
 
 mainm.Closed = function()
@@ -11,6 +11,12 @@ local function ShowLoadingPrompt(msg, type)
 	BeginTextCommandBusyspinnerOn("STRING")
 	AddTextComponentSubstringPlayerName(msg)
     EndTextCommandBusyspinnerOn(type)
+end
+
+local function ShowNotification(msg)
+    BeginTextCommandThefeedPost("STRING")
+    AddTextComponentSubstringPlayerName(msg)
+    EndTextCommandThefeedPostTicker(true, true)
 end
 
 local function OpenClipMenu()
@@ -40,7 +46,7 @@ local function OpenClipMenu()
                         end
                         StartRecording(1)
                     else
-                        ESX.ShowNotification("∑ You are already recording")
+                        ShowNotification("∑ You are already recording")
                     end
                 end
             })
@@ -50,7 +56,7 @@ local function OpenClipMenu()
                     if IsRecording() then
                         StopRecordingAndSaveClip()
                     else
-                        ESX.ShowNotification("∑ You are not recording")
+                        ShowNotification("∑ You are not recording")
                     end
                 end
             })
@@ -60,7 +66,7 @@ local function OpenClipMenu()
                     if IsRecording() then
                         StopRecordingAndDiscardClip()
                     else
-                        ESX.ShowNotification("∑ You are not recording")
+                        ShowNotification("∑ You are not recording")
                     end
                 end
             })
@@ -84,11 +90,15 @@ local function OpenClipMenu()
                         Wait(1000)
                         DoScreenFadeIn(1500)
                     else
-                        ESX.ShowNotification("∑ You are recording, stop your recording first")
+                        ShowNotification("∑ You are recording, stop your recording first")
                     end
                 end
             })
-            RageUI.Button("No", "I d'ont want to leave the server and open rockstar editor", {}, true, {}, mainm)
+            RageUI.Button("No", "I don't want to leave the server and open rockstar editor", {}, true, {
+                onSelected = function()
+                    RageUI.GoBack()
+                end
+            })
         end)
 
     end
